@@ -1,4 +1,4 @@
-function WorkoutPlanCard({ workout }) {
+function WorkoutPlanCard({workout}) {
   if (!workout) return null;
 
   return (

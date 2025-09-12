@@ -39,7 +39,7 @@ function Home() {
 
         {/* show all Diet Plan by userId  */}
         <div className="felx">
-          
+          <WorkoutPlanCard/>
         </div>
 
 

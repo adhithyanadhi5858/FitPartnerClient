@@ -1,86 +1,91 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { AxiosInstance } from '../../Config/AxiosInstance'
 
-import { useState } from "react";
+function WorkoutPlan() {
 
-export default function DietPlan() {
-  const [form, setForm] = useState({
-    age: "",
-    weight: "",
-    height: "",
-    goal: "muscle gain",
-    activity: "moderate",
-  });
+  const [age, setAge] = useState()
+  const [weight, setWeight] = useState()
+  const [height, setHeight] = useState()
+  const [goal, setGoal] = useState()
+  const [activity, setActivity] = useState()
 
-  const [dietPlan, setDietPlan] = useState(null);
+  
+  const HandleSubmit = (e)=>{
+    e.preventDefault()
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+    const formData = new FormData()
+    formData.append("age", age)
+    formData.append('weight', weight)
+    formData.append('height', height)
+    formData.append("goal", goal)
+    formData.append("activity",activity)
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
 
-    // 🔥 later connect to backend API here
-    setDietPlan({
-      breakfast: "Oats + 3 Boiled Eggs + Banana",
-      lunch: "Brown Rice + Chicken Breast + Vegetables",
-      snack: "Whey Protein Shake + Almonds",
-      dinner: "Chapati + Fish Curry + Salad",
-    });
-  };
+    try {
+      const res = AxiosInstance.post("ai/diet",formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+      console.log("response===",res.data)
+
+      setAge("")
+      setWeight("")
+      setHeight("")
+      setGoal("")
+      setActivity("")
+
+
+    } catch (error) {
+      console.log("Workout Plan error===",error.message)
+    }
+
+  }
+
+
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white flex flex-col items-center py-12 px-6">
-      <h1 className="text-4xl font-extrabold text-primary mb-6">Generate Diet Plan</h1>
-
-      {/* Form */}
-      <form
-        onSubmit={handleSubmit}
-        className="bg-black/40 border text-primary border-gray-700 rounded-2xl p-8 shadow-lg w-full max-w-lg space-y-6"
-      >
+    <div className='min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white flex flex-col items-center py-12 px-6'>
+      <h1 className='text-4xl font-bold '>Your Diet Plan</h1>
+      <p className='text-gray-400 mt-2 text-center'>Get AI powered workout plan based on your body type and fitness goals</p>
+      <form onSubmit={HandleSubmit} className='g-black/40 border mt-8 text-primary border-gray-700 rounded-2xl p-8 shadow-lg w-full max-w-lg space-y-6'>
         <div>
-          <label className="label">Age</label>
+          <label className="label text-white">Age</label>
           <input
             type="number"
             name="age"
-            value={form.age}
-            onChange={handleChange}
             className="input input-bordered w-full"
             required
+            onChange={(e)=>setAge(e.target.value)}
           />
         </div>
 
         <div>
-          <label className="label">Weight (kg)</label>
+          <label className="label text-white">Weight (kg)</label>
           <input
             type="number"
             name="weight"
-            value={form.weight}
-            onChange={handleChange}
             className="input input-bordered w-full"
             required
+            onChange={(e)=>setWeight(e.target.value)}
           />
         </div>
 
         <div>
-          <label className="label">Height (cm)</label>
+          <label className="label text-white">Height (cm)</label>
           <input
             type="number"
             name="height"
-            value={form.height}
-            onChange={handleChange}
             className="input input-bordered w-full"
             required
+            onChange={(e)=>setHeight(e.target.value)}
           />
         </div>
 
         <div>
-          <label className="label">Goal</label>
+          <label className="label text-white">Goal</label>
           <select
             name="goal"
-            value={form.goal}
-            onChange={handleChange}
             className="select select-bordered w-full"
+            onChange={(e)=>setGoal(e.target.value)}
           >
             <option value="muscle gain">Muscle Gain</option>
             <option value="fat loss">Fat Loss</option>
@@ -89,35 +94,22 @@ export default function DietPlan() {
         </div>
 
         <div>
-          <label className="label">Activity Level</label>
+          <label className="label text-white">Activity Level</label>
           <select
             name="activity"
-            value={form.activity}
-            onChange={handleChange}
             className="select select-bordered w-full"
+            onChange={(e)=>setActivity(e.target.value)}
           >
             <option value="low">Low</option>
             <option value="moderate">Moderate</option>
             <option value="high">High</option>
           </select>
         </div>
-
         <button className="btn btn-primary w-full">Generate Plan</button>
       </form>
 
-      {/* Result */}
-      {dietPlan && (
-        <div className="mt-10 bg-black/50 p-8 rounded-xl w-full max-w-2xl shadow-lg">
-          <h2 className="text-2xl font-bold text-primary mb-4">Your Diet Plan</h2>
-          <ul className="space-y-3">
-            <li><strong>Breakfast:</strong> {dietPlan.breakfast}</li>
-            <li><strong>Lunch:</strong> {dietPlan.lunch}</li>
-            <li><strong>Snack:</strong> {dietPlan.snack}</li>
-            <li><strong>Dinner:</strong> {dietPlan.dinner}</li>
-          </ul>
-        </div>
-      )}
     </div>
-  );
+  )
 }
 
+export default WorkoutPlan
