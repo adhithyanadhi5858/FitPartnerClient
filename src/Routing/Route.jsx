@@ -6,13 +6,14 @@ import Login from "../Pages/Login";
 import UserProtection from "./UserProtection";
 import DietPlan from "../Pages/DietPlan";
 import Home from "../Pages/Home";
-import WorkoutPlan from "../Pages/WorkoutPlan";
-import Progress from "../Pages/Progress";
-import Settings from "../Pages/Settings";
+import WorkoutPlan from "../Pages/WorkoutPlan";''
 import Dashboard from "../Pages/DashBoard";
 import Profile from "../Pages/Profile";
 import AITrainer from "../Pages/AiTrainer";
 import Notification from "../Pages/Notification";
+import WorkoutDetails from "../Pages/WorkoutDetails";
+import DietPlanDetails from "../Pages/DietPlanDetails";
+import Settings from "../Pages/Settings";
 
 
 export const router = createBrowserRouter([
@@ -46,12 +47,8 @@ export const router = createBrowserRouter([
                         element: <WorkoutPlan />
                     },
                     {
-                        path: "Progress",
-                        element: <Progress />
-                    },
-                    {
                         path: "settings",
-                        element: <Settings />
+                        element: <Settings/>
                     },
                     {
                         path: "dash-board",
@@ -67,9 +64,17 @@ export const router = createBrowserRouter([
                     },
                     {
                         path: "notification",
-                        element: <Notification/>
+                        element: <Notification />
                     },
-                    
+                    {
+                        path: "workout-details",
+                        element: <WorkoutDetails />
+                    },
+                    {
+                        path: "diet-details",
+                        element: <DietPlanDetails/>
+                    }
+
                 ]
 
             }

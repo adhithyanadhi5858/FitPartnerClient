@@ -16,10 +16,10 @@ function HeaderPublic() {
 
         {/* Links */}
         <div className="flex-none gap-3">
-          <Link to={'/register'} className="btn btn-outline btn-primary px-6 rounded-full hover:scale-105 transition">
+          <Link to={'/login'} className="btn btn-outline btn-primary px-6 rounded-full hover:scale-105 transition">
             Sign In
           </Link>
-          <Link to={'/login'} className="btn btn-primary px-6 rounded-full shadow-md hover:scale-105 transition">
+          <Link to={'/register'} className="btn btn-primary px-6 rounded-full shadow-md hover:scale-105 transition">
             Sign Up
           </Link>
         </div>

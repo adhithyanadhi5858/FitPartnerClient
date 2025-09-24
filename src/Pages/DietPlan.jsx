@@ -1,45 +1,39 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { AxiosInstance } from '../../Config/AxiosInstance'
+import { useNavigate } from 'react-router-dom'
 
-function WorkoutPlan() {
-
+function DietPlan() {
   const [age, setAge] = useState()
   const [weight, setWeight] = useState()
   const [height, setHeight] = useState()
   const [goal, setGoal] = useState()
   const [activity, setActivity] = useState()
 
-  
-  const HandleSubmit = (e)=>{
+  const navigate = useNavigate()
+
+
+  const HandleSubmit = (e) => {
     e.preventDefault()
-
-    const formData = new FormData()
-    formData.append("age", age)
-    formData.append('weight', weight)
-    formData.append('height', height)
-    formData.append("goal", goal)
-    formData.append("activity",activity)
-
-
     try {
-      const res = AxiosInstance.post("ai/diet",formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+      AxiosInstance.post("/ai/diet", {
+        age,
+        weight,
+        height,
+        goal,
+        activity
       })
-      console.log("response===",res.data)
-
-      setAge("")
-      setWeight("")
-      setHeight("")
-      setGoal("")
-      setActivity("")
-
+        .then(res => {
+          console.log("diet plan===", res.data)
+          navigate("/user/diet-details", { state: { plan: res.data.dietPlanObject } })
+        })
+        .catch(err => {
+          console.log("Diet plan error===", err.message)
+        })
 
     } catch (error) {
-      console.log("Workout Plan error===",error.message)
+      console.log("Workout Plan error===", error.message)
     }
-
   }
-
 
 
   return (
@@ -54,7 +48,8 @@ function WorkoutPlan() {
             name="age"
             className="input input-bordered w-full"
             required
-            onChange={(e)=>setAge(e.target.value)}
+            value={age || ""}                 // bind state
+            onChange={(e) => setAge(e.target.value)}
           />
         </div>
 
@@ -65,7 +60,8 @@ function WorkoutPlan() {
             name="weight"
             className="input input-bordered w-full"
             required
-            onChange={(e)=>setWeight(e.target.value)}
+            value={weight || ""}              // bind state
+            onChange={(e) => setWeight(e.target.value)}
           />
         </div>
 
@@ -76,17 +72,22 @@ function WorkoutPlan() {
             name="height"
             className="input input-bordered w-full"
             required
-            onChange={(e)=>setHeight(e.target.value)}
+            value={height || ""}              // bind state
+            onChange={(e) => setHeight(e.target.value)}
           />
         </div>
 
         <div>
           <label className="label text-white">Goal</label>
+
           <select
             name="goal"
             className="select select-bordered w-full"
-            onChange={(e)=>setGoal(e.target.value)}
+            required
+            value={goal || ""}                // bind state
+            onChange={(e) => setGoal(e.target.value)}
           >
+            <option value="" disabled>-- Select Goal --</option>
             <option value="muscle gain">Muscle Gain</option>
             <option value="fat loss">Fat Loss</option>
             <option value="maintenance">Maintenance</option>
@@ -95,21 +96,25 @@ function WorkoutPlan() {
 
         <div>
           <label className="label text-white">Activity Level</label>
+
           <select
             name="activity"
             className="select select-bordered w-full"
-            onChange={(e)=>setActivity(e.target.value)}
+            required
+            value={activity || ""}            // bind state
+            onChange={(e) => setActivity(e.target.value)}
           >
+            <option value="" disabled>-- Select Activity --</option>
             <option value="low">Low</option>
             <option value="moderate">Moderate</option>
             <option value="high">High</option>
           </select>
         </div>
         <button className="btn btn-primary w-full">Generate Plan</button>
-      </form>
 
+      </form>
     </div>
   )
 }
 
-export default WorkoutPlan
+export default DietPlan

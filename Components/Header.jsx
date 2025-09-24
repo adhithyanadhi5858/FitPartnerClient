@@ -1,12 +1,51 @@
-import { Dumbbell, Home, BarChart3, Settings, Utensils, Activity, Bell, Bot } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Dumbbell, Home,Settings, Utensils, Activity, Bell, Bot } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { AxiosInstance } from "../Config/AxiosInstance";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { clearUser } from "../src/features/Users/UserSlice";
+import toast, { Toaster } from "react-hot-toast";
 
 function Header() {
+  const [user, setuser] = useState()
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const fetchProfile = () => {
+    AxiosInstance.get("/user/profile")
+      .then(res => {
+        setuser(res.data.UserData)
+      })
+      .catch(err => {
+        console.log("header error==", err.message)
+      })
+  }
+
+  useEffect(() => {
+    fetchProfile()
+  }, [])
+
+  const logout = () => {
+
+    AxiosInstance.get("/user/logout")
+      .then(res => {
+        dispatch(clearUser())
+        toast.success("Logout Successfully!")
+        setTimeout(() => navigate("/login"), 2000)
+      })
+      .catch(err => {
+        console.log("logout err===", err.message)
+        toast.error("Logout failed")
+      })
+
+  }
+
+
   return (
     <>
       <header className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 shadow-lg sticky top-0 z-50">
         <div className="navbar container mx-auto px-4 md:px-6 py-3">
-          
+          <Toaster position="top-center" reverseOrder={false} />
           {/* Logo */}
           <div className="flex items-center gap-2 text-white font-bold text-xl">
             <Dumbbell className="w-7 h-7 text-primary" />
@@ -34,11 +73,6 @@ function Header() {
                 </Link>
               </li>
               <li>
-                <Link to={"/user/progress"} className="hover:text-primary flex items-center gap-2">
-                  <BarChart3 className="w-5 h-5" /> Progress
-                </Link>
-              </li>
-              <li>
                 <Link to={"/user/ai"} className="hover:text-primary flex items-center gap-2">
                   <Bot className="w-5 h-5" /> AI Trainer
                 </Link>
@@ -63,7 +97,7 @@ function Header() {
               <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
                 <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
                   <img
-                    src="https://api.dicebear.com/7.x/avataaars/svg?seed=fitpartner"
+                    src={user?.profilePic}
                     alt="Profile"
                   />
                 </div>
@@ -79,7 +113,7 @@ function Header() {
                   <Link to={"/user/settings"}>Settings</Link>
                 </li>
                 <li>
-                  <button>Logout</button>
+                  <button onClick={logout}>Logout</button>
                 </li>
               </ul>
             </div>
@@ -104,7 +138,6 @@ function Header() {
                 <li><Link to={"/"}>Home</Link></li>
                 <li><Link to={"/user/workout"}>Workout</Link></li>
                 <li><Link to={"/user/diet"}>Diet</Link></li>
-                <li><Link to={"/user/progress"}>Progress</Link></li>
                 <li><Link to={"/user/ai"}>AI Trainer</Link></li>
                 <li><Link to={"/user/settings"}>Settings</Link></li>
               </ul>

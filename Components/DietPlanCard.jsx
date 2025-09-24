@@ -1,37 +1,24 @@
-function DietPlanCard({ plan }) {
-  if (!plan) return null;
+import React from 'react'
 
+function DietPlanCard({data}) {
   return (
-    <div className="card bg-base-100 shadow-xl border p-6">
-      <h2 className="text-2xl font-bold text-primary mb-2">{plan.title}</h2>
-      <p className="text-gray-600 mb-4">{plan.description}</p>
-
-      <div className="space-y-4">
-        {plan.meals?.map((meal, idx) => (
-          <div key={idx} className="border rounded-lg p-3">
-            <h3 className="font-semibold text-lg">{meal.type}</h3>
-            <ul className="list-disc ml-5 text-sm mt-2 space-y-1">
-              {meal.items?.map((item, i) => (
-                <li key={i}>
-                  {item.food} – {item.quantity} 
-                  <span className="text-gray-500">
-                    ({item.calories} cal, P:{item.protein}g C:{item.carbs}g F:{item.fats}g)
-                  </span>
-                </li>
-              ))}
-            </ul>
+    <div>
+      <div className="card bg-base-100 image-full w-96 shadow-sm">
+        <figure>
+          <img
+            src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+            alt="Shoes" />
+        </figure>
+        <div className="card-body">
+          <h2 className="card-title">{data.title}</h2>
+          <p>A card component has a figure, a body part, and inside body there are title and actions parts</p>
+          <div className="card-actions justify-end">
+            <button className="btn btn-primary">Buy Now</button>
           </div>
-        ))}
-      </div>
-
-      <div className="mt-4 text-sm font-semibold">
-        <p>Total Calories: {plan.totalCalories}</p>
-        <p>Protein Target: {plan.proteinTarget}g</p>
-        <p>Carbs Target: {plan.carbTarget}g</p>
-        <p>Fats Target: {plan.fatTarget}g</p>
+        </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default DietPlanCard;
+export default DietPlanCard

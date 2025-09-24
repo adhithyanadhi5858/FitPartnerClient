@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { AxiosInstance } from "../../Config/AxiosInstance";
 import { useDispatch } from "react-redux";
 import { SaveUser } from "../features/Users/UserSlice";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function Register() {
 
@@ -12,17 +13,21 @@ export default function Register() {
 
   const onSubmit = async (data) => {
     try {
-      console.log("datass===",data)
+      console.log("datass===", data)
       await AxiosInstance.post('/user/register', data)
         .then(res => {
           console.log(res.data)
           dispatch(SaveUser(res.data.newUser))
-          setTimeout(()=>navigate("/user/profile"),2000)
+          toast.success('Successfully Registered')
+          toast('Welcome!', {
+            icon: '👏',
+          });
+          setTimeout(() => navigate("/user/profile"), 2000)
         }).catch(err => {
           console.log("registerError ===", err.message)
         })
     } catch (error) {
-      console.log("Onsubmit error===",error.message)
+      console.log("Onsubmit error===", error.message)
 
     }
   }
@@ -30,6 +35,7 @@ export default function Register() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white">
       <div className="w-full max-w-md bg-gray-800 rounded-2xl shadow-lg p-8">
+      <Toaster position="top-center" reverseOrder={false} />
         <h2 className="text-3xl font-bold text-center mb-6">Create Account</h2>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 text-black">

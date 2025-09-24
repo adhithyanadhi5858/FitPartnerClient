@@ -1,6 +1,5 @@
 import { Dumbbell, Apple } from "lucide-react";
 import { Link } from 'react-router-dom';
-import WorkoutPlanCard from "../../Components/WorkoutPlanCard";
 
 function Home() {
   return (
@@ -35,11 +34,6 @@ function Home() {
           <div className="">
             <img className='rounded-2xl shadow-lg object-cover w-full h-[350px]' src="Assets/ai-personal-trainer.jpeg" alt="Ai Personal Trainer" />
           </div>
-        </div>
-
-        {/* show all Diet Plan by userId  */}
-        <div className="felx">
-          <WorkoutPlanCard/>
         </div>
 
 
